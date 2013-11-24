@@ -18,7 +18,7 @@ import java.util.List;
 
 public class ImageHelper {
 
-	public static int matchImages(Mat img1, Mat img2){
+	public static int matchImages(Mat img1, Mat img2) {
 		MatOfKeyPoint keypoints1 = new MatOfKeyPoint();
 		MatOfKeyPoint keypoints2 = new MatOfKeyPoint();
 		Mat descriptors1 = new Mat();
@@ -40,15 +40,19 @@ public class ImageHelper {
 
 		//Match points of two images
 		MatOfDMatch matches = new MatOfDMatch();
-		matcher.match(descriptors1,descriptors2 ,matches);
+		matcher.match(descriptors1, descriptors2, matches);
 
 		float max = 0;
 		float min = Float.MAX_VALUE;
 		double total = 0;
 		List<DMatch> dMatches = matches.toList();
-		for(DMatch match : dMatches){
-			if(match.distance > max) { max = match.distance; }
-			if(match.distance < min) { min = match.distance; }
+		for (DMatch match : dMatches) {
+			if (match.distance > max) {
+				max = match.distance;
+			}
+			if (match.distance < min) {
+				min = match.distance;
+			}
 			total += match.distance;
 		}
 
@@ -60,16 +64,16 @@ public class ImageHelper {
 
 		int goodMatches = 0;
 
-		for(DMatch match : dMatches){
-			if(match.distance >= min * 2){goodMatches++;}
+		for (DMatch match : dMatches) {
+			if (match.distance >= min * 2) {
+				goodMatches++;
+			}
 		}
-
-		System.out.println("Matches: " + goodMatches);
 
 		return goodMatches;
 	}
 
-	public static String createThumbnail(Mat image){
+	public static String createThumbnail(Mat image) {
 		return createThumbnail(image, 2);
 	}
 
@@ -79,9 +83,9 @@ public class ImageHelper {
 		return matBase64(thumb);
 	}
 
-	private static String matBase64(Mat mat){
+	private static String matBase64(Mat mat) {
 		BufferedImage bi = matToBufferedImage(mat);
-		if(bi != null){
+		if (bi != null) {
 			return buffImageToBase64(bi);
 		} else {
 			return "";
@@ -102,7 +106,7 @@ public class ImageHelper {
 	}
 
 	private static BufferedImage matToBufferedImage(Mat matrix) {
-		MatOfByte mb=new MatOfByte();
+		MatOfByte mb = new MatOfByte();
 		Highgui.imencode(".jpg", matrix, mb);
 		try {
 			return ImageIO.read(new ByteArrayInputStream(mb.toArray()));

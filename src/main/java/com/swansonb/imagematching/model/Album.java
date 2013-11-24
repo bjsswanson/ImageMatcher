@@ -1,4 +1,4 @@
-package com.swansonb.imagematching;
+package com.swansonb.imagematching.model;
 
 import org.opencv.core.Mat;
 
@@ -7,7 +7,7 @@ public class Album {
 	private String albumName;
 	private String artist;
 	private transient Mat image;
-	private String thumb;
+	private transient String thumb;
 
 	public Album(Image tempImage, String albumName, String artist) {
 		this.id = tempImage.getId();
@@ -37,11 +37,11 @@ public class Album {
 		return thumb;
 	}
 
-	public void setAlbumName(String albumName) {
-		this.albumName = albumName;
+	public void setImage(Mat image) {
+		this.image = image;
 	}
 
-	public void setArtist(String artist) {
-		this.artist = artist;
+	public void setThumb(String thumb) {
+		this.thumb = thumb;
 	}
 }
