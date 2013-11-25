@@ -25,8 +25,8 @@ public class ImageHelper {
 		Mat descriptors2 = new Mat();
 
 		//Definition of ORB keypoint detector and descriptor extractors
-		FeatureDetector detector = FeatureDetector.create(FeatureDetector.ORB);
-		DescriptorExtractor extractor = DescriptorExtractor.create(DescriptorExtractor.ORB);
+		FeatureDetector detector = FeatureDetector.create(FeatureDetector.SURF);
+		DescriptorExtractor extractor = DescriptorExtractor.create(DescriptorExtractor.SURF);
 
 		//Detect keypoints
 		detector.detect(img1, keypoints1);
@@ -36,7 +36,7 @@ public class ImageHelper {
 		extractor.compute(img2, keypoints2, descriptors2);
 
 		//Definition of descriptor matcher
-		DescriptorMatcher matcher = DescriptorMatcher.create(DescriptorMatcher.BRUTEFORCE_HAMMING);
+		DescriptorMatcher matcher = DescriptorMatcher.create(DescriptorMatcher.FLANNBASED);
 
 		//Match points of two images
 		MatOfDMatch matches = new MatOfDMatch();
@@ -61,7 +61,7 @@ public class ImageHelper {
 		int goodMatches = 0;
 
 		for (DMatch match : dMatches) {
-			if (match.distance >= min * 2) {
+			if (match.distance <= min * 2) {
 				goodMatches++;
 			}
 		}

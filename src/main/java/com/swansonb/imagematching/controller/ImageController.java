@@ -31,7 +31,7 @@ public class ImageController {
 	}
 
 	private void initCamera() {
-		camera = new VideoCapture(0);
+		camera = new VideoCapture(1);
 		camera.open(0); //Useless
 
 		if (!camera.isOpened()) {
