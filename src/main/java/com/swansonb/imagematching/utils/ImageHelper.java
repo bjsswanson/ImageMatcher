@@ -1,4 +1,4 @@
-package com.swansonb.imagematching;
+package com.swansonb.imagematching.utils;
 
 import com.sun.org.apache.xml.internal.security.utils.Base64;
 import org.opencv.core.*;

@@ -1,10 +1,10 @@
-package com.swansonb.imagematching;
+package com.swansonb.imagematching.controller;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.swansonb.imagematching.datastore.AlbumStore;
 import com.swansonb.imagematching.model.Album;
 import com.swansonb.imagematching.model.Image;
-import org.opencv.core.Core;
+import com.swansonb.imagematching.utils.ImageHelper;
+import com.swansonb.imagematching.utils.JsonUtils;
 import org.opencv.core.Mat;
 import org.opencv.highgui.VideoCapture;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.Collection;
 
 @Controller
@@ -24,14 +22,12 @@ public class ImageController {
 
 	public static final String EMPTY_JSON = "{}";
 	private VideoCapture camera;
-	private Gson gson;
 
 	@Autowired
 	private AlbumStore albumStore;
 
 	public ImageController() throws NoSuchFieldException, IllegalAccessException {
 		initCamera();
-		gson = new GsonBuilder().excludeFieldsWithModifiers(Modifier.TRANSIENT).create();
 	}
 
 	private void initCamera() {
@@ -90,7 +86,7 @@ public class ImageController {
 	@RequestMapping(value = "/list", method = RequestMethod.GET,
 			produces = "application/json; charset=utf-8")
 	public @ResponseBody String list() throws IOException {
-		return gson.toJson(albumStore.getAlbums());
+		return JsonUtils.toJson(albumStore.getAlbums());
 	}
 
 	@RequestMapping(value = "/update", method = RequestMethod.POST,

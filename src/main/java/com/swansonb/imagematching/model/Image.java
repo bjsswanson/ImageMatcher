@@ -1,7 +1,7 @@
 package com.swansonb.imagematching.model;
 
 import com.google.gson.annotations.SerializedName;
-import com.swansonb.imagematching.ImageHelper;
+import com.swansonb.imagematching.utils.ImageHelper;
 import org.opencv.core.Mat;
 
 public class Image {

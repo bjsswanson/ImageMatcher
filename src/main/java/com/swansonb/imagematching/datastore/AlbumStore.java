@@ -1,4 +1,4 @@
-package com.swansonb.imagematching;
+package com.swansonb.imagematching.datastore;
 
 import com.swansonb.imagematching.model.Album;
 import com.swansonb.imagematching.model.Image;

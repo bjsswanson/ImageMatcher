@@ -1,4 +1,4 @@
-package com.swansonb.imagematching;
+package com.swansonb.imagematching.datastore;
 
 import com.swansonb.imagematching.filter.ImageFileFilter;
 import com.swansonb.imagematching.filter.JsonFileFilter;
