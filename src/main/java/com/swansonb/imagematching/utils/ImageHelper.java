@@ -58,10 +58,6 @@ public class ImageHelper {
 
 		double average = total / dMatches.size();
 
-		System.out.println("Max: " + max);
-		System.out.println("Min: " + min);
-		System.out.println("Average: " + average);
-
 		int goodMatches = 0;
 
 		for (DMatch match : dMatches) {
