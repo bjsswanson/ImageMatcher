@@ -2,10 +2,7 @@ package com.swansonb.imagematching.utils;
 
 import com.sun.org.apache.xml.internal.security.utils.Base64;
 import org.opencv.core.*;
-import org.opencv.features2d.DMatch;
-import org.opencv.features2d.DescriptorExtractor;
-import org.opencv.features2d.DescriptorMatcher;
-import org.opencv.features2d.FeatureDetector;
+import org.opencv.features2d.*;
 import org.opencv.highgui.Highgui;
 import org.opencv.imgproc.Imgproc;
 
@@ -14,19 +11,23 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ImageHelper {
 
-	public static int matchImages(Mat img1, Mat img2) {
+	public static final int MAX_POINT_COMPARE_DIST = 5;
+
+	public static double matchImages(Mat img1, Mat img2) {
 		MatOfKeyPoint keypoints1 = new MatOfKeyPoint();
 		MatOfKeyPoint keypoints2 = new MatOfKeyPoint();
 		Mat descriptors1 = new Mat();
 		Mat descriptors2 = new Mat();
 
 		//Definition of ORB keypoint detector and descriptor extractors
-		FeatureDetector detector = FeatureDetector.create(FeatureDetector.SURF);
-		DescriptorExtractor extractor = DescriptorExtractor.create(DescriptorExtractor.SURF);
+		FeatureDetector detector = FeatureDetector.create(FeatureDetector.DYNAMIC_FAST);
+		DescriptorExtractor extractor = DescriptorExtractor.create(DescriptorExtractor.SIFT);
 
 		//Detect keypoints
 		detector.detect(img1, keypoints1);
@@ -36,7 +37,7 @@ public class ImageHelper {
 		extractor.compute(img2, keypoints2, descriptors2);
 
 		//Definition of descriptor matcher
-		DescriptorMatcher matcher = DescriptorMatcher.create(DescriptorMatcher.FLANNBASED);
+		DescriptorMatcher matcher = DescriptorMatcher.create(DescriptorMatcher.BRUTEFORCE);
 
 		//Match points of two images
 		MatOfDMatch matches = new MatOfDMatch();
@@ -44,7 +45,8 @@ public class ImageHelper {
 
 		float max = 0;
 		float min = Float.MAX_VALUE;
-		double total = 0;
+
+
 		List<DMatch> dMatches = matches.toList();
 		for (DMatch match : dMatches) {
 			if (match.distance > max) {
@@ -53,20 +55,30 @@ public class ImageHelper {
 			if (match.distance < min) {
 				min = match.distance;
 			}
-			total += match.distance;
 		}
 
-		double average = total / dMatches.size();
+		//look whether the match is inside a defined area of the image
+		//only 25% of maximum of possible distance
+		double distThreshold = 0.25 * Math.sqrt((Math.pow(img1.size().height,2) + Math.pow(img1.size().width,2)) * 2);
 
-		int goodMatches = 0;
-
+		List<DMatch> goodMatches = new ArrayList<DMatch>();
 		for (DMatch match : dMatches) {
-			if (match.distance <= min * 2) {
-				goodMatches++;
+			Point from =  keypoints1.toArray()[match.queryIdx].pt;
+			Point to = keypoints2.toArray()[match.trainIdx].pt;
+			if (match.distance < distThreshold && Math.abs(from.y - to.y) < MAX_POINT_COMPARE_DIST) {
+				goodMatches.add(match);
 			}
 		}
 
-		return goodMatches;
+		//Draw matches
+		//MatOfDMatch goodMat = new MatOfDMatch();
+		//goodMat.fromList(goodMatches);
+		//Mat out = new Mat();
+		//Features2d.drawMatches(img1, keypoints1, img2, keypoints2, goodMat, out);
+		//Highgui.imwrite("test" + counter.incrementAndGet() +".png", out);
+		//System.out.println(goodMatches.size());
+
+		return goodMatches.size();
 	}
 
 	public static String createThumbnail(Mat image) {

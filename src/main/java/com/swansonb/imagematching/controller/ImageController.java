@@ -70,11 +70,11 @@ public class ImageController {
 
 	private Album findBestMatch(Mat image) {
 		Album bestMatch = null;
-		int bestMatchRating = 0;
+		double bestMatchRating = 0;
 
 		Collection<Album> albums = albumStore.getAlbums();
 		for (Album album : albums) {
-			int matchRating = ImageHelper.matchImages(image, album.getImage());
+			double matchRating = ImageHelper.matchImages(image, album.getImage());
 			if (bestMatch == null || matchRating > bestMatchRating) {
 				bestMatch = album;
 				bestMatchRating = matchRating;
