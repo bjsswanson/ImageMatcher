@@ -17,7 +17,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class ImageHelper {
 
-	public static final int MAX_POINT_COMPARE_DIST = 5;
+	public static final int MAX_POINT_COMPARE_DIST = 200;
+	public static final double DIST_THRESHOLD = 0.25;
+	//private static AtomicInteger counter = new AtomicInteger();
 
 	public static double matchImages(Mat img1, Mat img2) {
 		MatOfKeyPoint keypoints1 = new MatOfKeyPoint();
@@ -59,7 +61,7 @@ public class ImageHelper {
 
 		//look whether the match is inside a defined area of the image
 		//only 25% of maximum of possible distance
-		double distThreshold = 0.25 * Math.sqrt((Math.pow(img1.size().height,2) + Math.pow(img1.size().width,2)) * 2);
+		double distThreshold = DIST_THRESHOLD * Math.sqrt((Math.pow(img1.size().height,2) + Math.pow(img1.size().width,2)) * 2);
 
 		List<DMatch> goodMatches = new ArrayList<DMatch>();
 		for (DMatch match : dMatches) {
@@ -75,7 +77,7 @@ public class ImageHelper {
 		//goodMat.fromList(goodMatches);
 		//Mat out = new Mat();
 		//Features2d.drawMatches(img1, keypoints1, img2, keypoints2, goodMat, out);
-		//Highgui.imwrite("test" + counter.incrementAndGet() +".png", out);
+		//Highgui.imwrite("matches/test" + counter.incrementAndGet() +".png", out);
 		//System.out.println(goodMatches.size());
 
 		return goodMatches.size();
