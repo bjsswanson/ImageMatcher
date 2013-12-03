@@ -1,6 +1,6 @@
 package com.swansonb.imagematching.utils;
 
-import com.sun.org.apache.xml.internal.security.utils.Base64;
+import org.apache.catalina.util.Base64;
 import org.opencv.core.*;
 import org.opencv.features2d.*;
 import org.opencv.highgui.Highgui;
