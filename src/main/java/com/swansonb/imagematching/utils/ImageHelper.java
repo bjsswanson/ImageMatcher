@@ -19,7 +19,7 @@ public class ImageHelper {
 
 	public static final int MAX_POINT_COMPARE_DIST = 200;
 	public static final double DIST_THRESHOLD = 0.25;
-	//private static AtomicInteger counter = new AtomicInteger();
+	private static AtomicInteger counter = new AtomicInteger();
 
 	public static double matchImages(Mat img1, Mat img2) {
 		MatOfKeyPoint keypoints1 = new MatOfKeyPoint();
@@ -72,15 +72,20 @@ public class ImageHelper {
 			}
 		}
 
-		//Draw matches
-		//MatOfDMatch goodMat = new MatOfDMatch();
-		//goodMat.fromList(goodMatches);
-		//Mat out = new Mat();
-		//Features2d.drawMatches(img1, keypoints1, img2, keypoints2, goodMat, out);
-		//Highgui.imwrite("matches/test" + counter.incrementAndGet() +".png", out);
-		//System.out.println(goodMatches.size());
+		//createMatchDiagrams(img1, img2, keypoints1, keypoints2, goodMatches);
+
 
 		return goodMatches.size();
+	}
+
+	private static void createMatchDiagrams(Mat img1, Mat img2, MatOfKeyPoint keypoints1, MatOfKeyPoint keypoints2, List<DMatch> goodMatches) {
+		//Draw matches
+		MatOfDMatch goodMat = new MatOfDMatch();
+		goodMat.fromList(goodMatches);
+		Mat out = new Mat();
+		Features2d.drawMatches(img1, keypoints1, img2, keypoints2, goodMat, out);
+		Highgui.imwrite("matches/test" + counter.incrementAndGet() + ".png", out);
+		System.out.println(goodMatches.size());
 	}
 
 	public static String createThumbnail(Mat image) {
