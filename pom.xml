@@ -41,12 +41,6 @@
 			<artifactId>commons-io</artifactId>
 			<version>2.4</version>
 		</dependency>
-		<dependency>
-			<groupId>commons-codec</groupId>
-			<artifactId>commons-codec</artifactId>
-			<version>1.7</version>
-		</dependency>
-
 	</dependencies>
 
 	<properties>
@@ -59,10 +53,6 @@
 				<directory>${project.basedir}/lib</directory>
 				<targetPath>${project.build.outputDirectory}/lib</targetPath>
 			</resource>
-			<resource>
-				<directory>${project.basedir}/lib</directory>
-				<targetPath>${project.build.outputDirectory}/native</targetPath>
-			</resource>
 		</resources>
 
 		<plugins>
@@ -73,6 +63,28 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.6</version>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/native</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${project.basedir}/native</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

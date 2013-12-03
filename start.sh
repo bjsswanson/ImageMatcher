@@ -1,0 +1,1 @@
+java -jar target/ImageMatcher-1.0-SNAPSHOT.jar
