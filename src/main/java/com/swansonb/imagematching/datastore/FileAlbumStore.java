@@ -103,12 +103,12 @@ public class FileAlbumStore implements AlbumStore {
 	}
 
 	@Override
-	public Album storeAlbum(String id, String albumName, String artist) {
+	public Album storeAlbum(String id, String uri) {
 		Image image = images.get(id);
 
 		try {
 			if(image != null){
-				Album album = new Album(image, albumName, artist);
+				Album album = new Album(image, uri);
 				File file = addFile(albumStore, id + ALBUM_EXT);
 				if(file.exists()){
 					FileUtils.forceDelete(file);
